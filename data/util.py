@@ -30,8 +30,9 @@ def read_image(path, dtype=np.float32, color=True):
             img = f.convert('P')
         img = np.asarray(img, dtype=dtype)
     finally:
-        if hasattr(f, 'close'):
-            f.close()
+        pass
+        # if hasattr(f, 'close'):
+        #     f.close()
 
     if img.ndim == 2:
         # reshape (H, W) -> (1, H, W)

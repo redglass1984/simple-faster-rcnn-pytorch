@@ -1,4 +1,4 @@
-visdom
+tensorboardX
 torchvision
 scikit-image
 tqdm

@@ -1,13 +1,44 @@
 from pprint import pprint
-
+from datetime import datetime
+from os.path import join
+import logging
 
 # Default Configs for training
 # NOTE that, config items could be overwriten by passing argument through command line.
 # e.g. --voc-data-dir='./data/'
 
+
+def init_logger(logdir):
+    # create logger with 'spam_application'
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler(join(opt.logdir, 'log.txt'))
+    fh.setLevel(logging.DEBUG)
+    # create console handler
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s [%(threadName)-10.10s] [%(levelname)-4.4s]  %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    # add the handlers to the logger
+    logger.addHandler(fh)
+    logger.addHandler(ch)
+
+
+def date_str():
+    """
+    Gets the current date as a string. Used to create unique directory names.
+    :return: A string of the format YYYY-MM-DD.hh:mm:ss'
+    """
+    return str(datetime.now()).replace(' ', '+').replace(':', '.')[:-7]  # [:-7] cuts off microseconds.
+
+
 class Config:
     # data
-    voc_data_dir = '~/data/voc/VOCdevkit/VOC2007/'
+    # voc_data_dir = '~/data/voc/VOCdevkit/VOC2007/'
+    voc_data_dir = '/mnt/nfs/home/mcooper/data/voc/VOCdevkit/VOC2007/'
     min_size = 600  # image resize
     max_size = 1000 # image resize
     num_workers = 8
@@ -49,6 +80,8 @@ class Config:
 
     caffe_pretrain = False # use caffe pretrained model instead of torchvision
     caffe_pretrain_path = 'checkpoints/vgg16-caffe.pth'
+
+    logdir = 'logs/{}'.format(date_str())
 
     def _parse(self, kwargs):
         state_dict = self._state_dict()

@@ -1,4 +1,8 @@
 .idea
+*.pth
+*.pt
+logs/
+save/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
